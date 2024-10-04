@@ -1,6 +1,12 @@
 import Link from 'next/link';
 import { FaXTwitter } from 'react-icons/fa6';
 import { HiHome } from 'react-icons/hi';
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+} from '@clerk/nextjs';
 export default function Sidebar() {
   return (
     <div className='flex flex-col p-3 justify-between h-screen items-center'>
@@ -16,7 +22,12 @@ export default function Sidebar() {
           <span className='font-bold hidden xl:inline'>Home</span>
         </Link>
         <button className='bg-blue-400 text-white rounded-full  hover:brightness-95 transition-all duration-200 w-48 h-9 shadow-md hidden xl:inline font-semibold'>
-          Sign in
+          <SignedIn>
+            <SignOutButton />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
         </button>
       </div>
     </div>
