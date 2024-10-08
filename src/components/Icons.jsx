@@ -43,6 +43,25 @@ export default function Icons({ post }) {
     }
   }, [likes, user]);
 
+  const deletePost = async () => {
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      if (user && user.publicMetadata.userMongoId === post.user) {
+        const res = await fetch('/api/post/delete', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ postId: post._id }),
+        });
+        if (res.status === 200) {
+          location.reload();
+        } else {
+          alert('Error deleting post');
+        }
+      }
+    }
+  };
+
   return (
     <div className='flex justify-start gap-5 p-2 text-gray-500'>
       <HiOutlineChat className='h-8 w-8 cursor-pointer rounded-full  transition duration-500 ease-in-out p-2 hover:text-sky-500 hover:bg-sky-100' />
@@ -64,7 +83,12 @@ export default function Icons({ post }) {
           </span>
         )}
       </div>
-      <HiOutlineTrash className='h-8 w-8 cursor-pointer rounded-full  transition duration-500 ease-in-out p-2 hover:text-red-500 hover:bg-red-100' />
+      {user && user.publicMetadata.userMongoId === post.user && (
+        <HiOutlineTrash
+          onClick={deletePost}
+          className='h-8 w-8 cursor-pointer rounded-full  transition duration-500 ease-in-out p-2 hover:text-red-500 hover:bg-red-100'
+        />
+      )}
     </div>
   );
 }
