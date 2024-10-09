@@ -4,6 +4,8 @@ import LeftSidebar from '@/components/LeftSidebar';
 import RightSidebar from '@/components/RightSidebar';
 import { ClerkProvider, ClerkLoaded, ClerkLoading } from '@clerk/nextjs';
 import Loader from '@/components/Loader';
+import SessionWrapper from '@/components/SessionWrapper';
+import CommentModal from '@/components/CommentModal';
 
 const geistSans = localFont({
   src: '.././fonts/GeistVF.woff',
@@ -24,27 +26,30 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang='en'>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <ClerkLoading>
-            <Loader />
-          </ClerkLoading>
-          <ClerkLoaded>
-            <div className='flex justify-between max-w-6xl mx-auto'>
-              <div className='hidden sm:inline border-r h-screen sticky top-0'>
-                <LeftSidebar />
-              </div>
+      <SessionWrapper>
+        <html lang='en'>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <ClerkLoading>
+              <Loader />
+            </ClerkLoading>
+            <ClerkLoaded>
+              <div className='flex justify-between max-w-6xl mx-auto'>
+                <div className='hidden sm:inline border-r h-screen sticky top-0'>
+                  <LeftSidebar />
+                </div>
 
-              <div className='w-2xl flex-1'>{children}</div>
-              <div className='lg:flex-col p-3 h-screen border-l hidden lg:flex w-[24rem]'>
-                <RightSidebar />
+                <div className='w-2xl flex-1'>{children}</div>
+                <div className='lg:flex-col p-3 h-screen border-l hidden lg:flex w-[24rem]'>
+                  <RightSidebar />
+                </div>
               </div>
-            </div>
-          </ClerkLoaded>
-        </body>
-      </html>
+              <CommentModal />
+            </ClerkLoaded>
+          </body>
+        </html>
+      </SessionWrapper>
     </ClerkProvider>
   );
 }
