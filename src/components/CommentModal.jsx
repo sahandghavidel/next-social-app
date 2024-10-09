@@ -65,6 +65,9 @@ export default function CommentModal() {
         setInput('');
         setOpen(false);
         router.push(`/posts/${postId}`);
+        setTimeout(() => {
+          router.refresh();
+        }, 100);
       }
     } catch (error) {
       console.log('Error sending comment:', error);
