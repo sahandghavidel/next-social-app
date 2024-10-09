@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import { HiX } from 'react-icons/hi';
 import { useEffect, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalAtom);
@@ -14,6 +15,7 @@ export default function CommentModal() {
   const [postLoading, setPostLoading] = useState(false);
   const [input, setInput] = useState('');
   const { user } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -40,7 +42,34 @@ export default function CommentModal() {
     fetchPost();
   }, [postId]);
 
-  const sendComment = async () => {};
+  const sendComment = async () => {
+    if (!user) {
+      return router.push('/sign-in');
+    }
+    try {
+      const res = await fetch('/api/post/comment', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          postId,
+          comment: input,
+          user: user.publicMetadata.userMongoId,
+          name: user.name,
+          username: user.username,
+          profileImg: user.imageUrl,
+        }),
+      });
+      if (res.status === 200) {
+        setInput('');
+        setOpen(false);
+        router.push(`/posts/${postId}`);
+      }
+    } catch (error) {
+      console.log('Error sending comment:', error);
+    }
+  };
 
   return (
     <div>
