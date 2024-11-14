@@ -8,5 +8,4 @@ This project is designed as a full-featured social media application.
 
 For more information, please refer to the official documentation of the technologies used:
 
-[`Clerk Documentation`](https://go.clerk.com/oWHn1t0)
-
+[`Clerk Documentation`](https://go.clerk.com/fgJHKlt)
